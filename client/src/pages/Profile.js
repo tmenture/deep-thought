@@ -12,16 +12,16 @@ import Auth from '../utils/auth';
 
 const Profile = (props) => {
   const [addFriend] = useMutation(ADD_FRIEND);
-  const { username: userParam } = useParams();
+  const { username: userParams } = useParams();
 
-  const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME, {
-    variables: { username: userParam },
+  const { loading, data } = useQuery(userParams ? QUERY_USER : QUERY_ME, {
+    variables: { username: userParams },
   });
 
   const user = data?.me || data?.user || {};
 
   // navigate to personal profile page if username is yours
-  if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
+  if (Auth.loggedIn() && Auth.getProfile().data.username === userParams) {
     return <Navigate to="/profile" />;
   }
 
@@ -52,10 +52,10 @@ const Profile = (props) => {
     <div>
       <div className="flex-row mb-3">
         <h2 className="bg-dark text-secondary p-3 display-inline-block">
-          Viewing {userParam ? `${user.username}'s` : 'your'} profile.
+          Viewing {userParams ? `${user.username}'s` : 'your'} profile.
         </h2>
 
-        {userParam && (
+        {userParams && (
           <button className="btn ml-auto" onClick={handleClick}>
             Add Friend
           </button>
@@ -78,7 +78,7 @@ const Profile = (props) => {
           />
         </div>
       </div>
-      <div className="mb-3">{!userParam && <ThoughtForm />}</div>
+      <div className="mb-3">{!userParams && <ThoughtForm />}</div>
     </div>
   );
 };
